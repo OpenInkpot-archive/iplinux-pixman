@@ -1,0 +1,37 @@
+Source: pixman
+Section: gui
+Priority: optional
+Maintainer: Yauhen Kharuzhy <jekhor@gmail.com>
+Build-Depends: debhelper, automake, autoconf, libtool, pkg-config
+XCS-Cross-Host-Build-Depends: debhelper, automake, autoconf, libtool, pkg-config
+Standards-Version: 3.7.3
+Vcs-Git: git://git.debian.org/git/pkg-xorg/lib/pixman
+Vcs-Browser: http://git.debian.org/?p=pkg-xorg/lib/pixman.git
+
+Package: libpixman-1-0
+Section: gui
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: pixel-manipulation library for X and cairo
+ A library for manipulating pixel regions -- a set of Y-X banded
+ rectangles, image compositing using the Porter/Duff model
+ and implicit mask generation for geometric primitives including
+ trapezoids, triangles, and rectangles.
+
+Package: libpixman-1-0-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: libpixman-1-0 (= ${binary:Version})
+Description: pixel-manipulation library for X and cairo (debugging symbols)
+ Debugging symbols for the Cairo/X pixel manipulation library.  This is
+ needed to debug programs linked against libpixman0.
+
+Package: libpixman-1-dev
+Section: libdevel
+Architecture: any
+Depends: libpixman-1-0 (= ${binary:Version})
+Conflicts: libpixman1-dev
+Description: pixel-manipulation library for X and cairo (development files)
+ Development libraries, header files and documentation needed by
+ programs that want to compile with the Cairo/X pixman library.
