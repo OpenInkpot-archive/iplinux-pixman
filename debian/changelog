@@ -1,0 +1,94 @@
+pixman (0.14.0-1) asimov; urgency=low
+
+  * New upstream release.
+  * First build for IPlinux.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 13 Mar 2009 19:49:15 +0600
+
+pixman (0.10.0-2.oi1) unstable; urgency=low
+
+  * OI port
+
+ -- Yauhen Kharuzhy <jekhor@gmail.com>  Mon, 26 May 2008 14:35:47 +0300
+
+pixman (0.10.0-2) unstable; urgency=low
+
+  [ Frans Pop ]
+  * Add libpixman-1-0-udeb (needed for cairo).  Closes: #476480.
+
+ -- Julien Cristau <jcristau@debian.org>  Thu, 17 Apr 2008 14:08:20 +0200
+
+pixman (0.10.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump shlibs to 0.10.0.
+  * Run autoreconf at build-time.
+    Build-depend on automake, autoconf, libtool and pkg-config.  Drop patch
+    for maintainer mode, and drop build-dep on quilt and corresponding code in
+    debian/rules.  Add new rules autogen and config, where we run autoreconf
+    and configure, respectively.  Update clean rule to remove files generated
+    by autogen.
+  * Add symbols file for libpixman-1-0.
+  * Bump Standards-Version to 3.7.3.
+  * Add Vcs-Git and Vcs-Browser control fields.
+
+ -- Julien Cristau <jcristau@debian.org>  Fri, 04 Apr 2008 14:31:30 +0200
+
+pixman (0.9.6-1) unstable; urgency=low
+
+  * New upstream release (closes: #452734).
+    + 02_no-sse.diff: remove, fix included upstream;
+    + 03_fbFetchTransformed_64bit_fix.diff: remove, 64bit issues should be
+      fixed too.
+
+ -- Julien Cristau <jcristau@debian.org>  Sun, 25 Nov 2007 00:41:31 +0100
+
+pixman (0.9.5-3) unstable; urgency=low
+
+  * Add patch by Francis Whittle from upstream bug#12398
+    (https://bugs.freedesktop.org/attachment.cgi?id=11896) to fix arithmetic
+    bug in fbFetchTransformed (causing X crashes on 64bit); closes: #444457.
+
+ -- Julien Cristau <jcristau@debian.org>  Tue, 16 Oct 2007 09:52:16 +0200
+
+pixman (0.9.5-2) unstable; urgency=high
+
+  * High urgency for RC bugfix.
+  * Don't use -msse, to prevent gcc 4.2 from generating SSE instructions for
+    its builtin functions, the X server from going SIGILL on CPUs supporting
+    MMX but not SSE, and us from losing (closes: #442829).
+  * Enable maintainer mode in configure.ac.
+
+ -- Julien Cristau <jcristau@debian.org>  Wed, 19 Sep 2007 23:21:46 +0200
+
+pixman (0.9.5-1) unstable; urgency=low
+
+  * New upstream release (no actual changes since 0.9.4-2, just new upstream
+    tarball).
+  * Add watch file.
+  * Upload to unstable for X.Org 7.3.
+
+ -- Julien Cristau <jcristau@debian.org>  Wed, 05 Sep 2007 21:43:58 +0200
+
+pixman (0.9.4-2) experimental; urgency=low
+
+  * Update from git master branch (commit 8ff7213f).
+  * Bump shlibs.
+
+ -- Julien Cristau <jcristau@debian.org>  Mon, 03 Sep 2007 17:11:24 +0200
+
+pixman (0.9.4-1) experimental; urgency=low
+
+  * New upstream version
+  * Update packaging for the name change. It's now pixman-1, so we use
+    libpixman-1-0 for the package names
+  * Add myself to uploaders
+  * Pull upstream fix for the .pc file for the library name change
+
+ -- David Nusinow <dnusinow@debian.org>  Thu, 09 Aug 2007 22:15:45 -0400
+
+pixman (0.9.3~git20070729-1) experimental; urgency=low
+
+  * First upload (closes: 428774).
+
+ -- Julien Cristau <jcristau@debian.org>  Wed, 01 Aug 2007 13:24:36 +0200
