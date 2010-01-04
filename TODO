@@ -1,3 +1,8 @@
+  - Testing
+    - Test implementations against each other
+    - Test both with and without the operator strength reduction.
+      They shold be identical.
+
   - SSE 2 issues:
 
       - Use MM_HINT_NTA instead of MM_HINT_T0
@@ -13,6 +18,8 @@
       - X server will require 16.16 essentially forever. Can we get
         the required precision by simply adding offset_x/y to the
         relevant rendering API?
+
+      - Get rid of workaround for X server bug.
 
       - pixman_image_set_indexed() should copy its argument, and X
         should be ported over to use a pixman_image as the
