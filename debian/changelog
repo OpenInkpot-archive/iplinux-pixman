@@ -1,3 +1,9 @@
+pixman (0.17.8-1) zelazny; urgency=low
+
+  * New upstream releaze.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 26 Feb 2010 13:56:57 +0600
+
 pixman (0.17.2-1) zelazny; urgency=low
 
   * New upstream release.
