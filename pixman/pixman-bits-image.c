@@ -115,12 +115,13 @@ bits_image_fetch_pixel_alpha (bits_image_t *image, int x, int y)
     }
     else
     {
-	pixel_a = image->fetch_pixel_raw_32 (
+	pixel_a = image->common.alpha_map->fetch_pixel_raw_32 (
 	    image->common.alpha_map, x, y);
 	pixel_a = ALPHA_8 (pixel_a);
     }
 
-    UN8x4_MUL_UN8 (pixel, pixel_a);
+    pixel &= 0x00ffffff;
+    pixel |= (pixel_a << 24);
 
     return pixel;
 }
@@ -1040,8 +1041,10 @@ pixman_image_create_bits (pixman_format_code_t format,
 
     /* must be a whole number of uint32_t's
      */
-    return_val_if_fail (bits == NULL ||
-                        (rowstride_bytes % sizeof (uint32_t)) == 0, NULL);
+    return_val_if_fail (
+	bits == NULL || (rowstride_bytes % sizeof (uint32_t)) == 0, NULL);
+
+    return_val_if_fail (PIXMAN_FORMAT_BPP (format) >= PIXMAN_FORMAT_DEPTH (format), NULL);
 
     if (!bits && width && height)
     {

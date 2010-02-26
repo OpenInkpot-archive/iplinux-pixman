@@ -2,27 +2,35 @@ TEST_LDADD = $(top_builddir)/pixman/libpixman-1.la
 INCLUDES = -I$(top_srcdir)/pixman -I$(top_builddir)/pixman
 
 TESTPROGRAMS =			\
+	a1-trap-test		\
 	region-test		\
-	scaling-test		\
-	blitters-test		\
-	composite		\
 	fetch-test		\
 	oob-test		\
 	window-test		\
-	trap-crasher
+	trap-crasher		\
+	alphamap		\
+	blitters-test		\
+	scaling-test		\
+	composite
 
+a1_trap_test_LDADD = $(TEST_LDADD)
 fetch_test_LDADD = $(TEST_LDADD)
-region_test_LDADD = $(TEST_LDADD)
 composite_LDADD = $(TEST_LDADD)
 trap_crasher_LDADD = $(TEST_LDADD)
 oob_test_LDADD = $(TEST_LDADD)
 window_test_LDADD = $(TEST_LDADD)
+
+region_test_LDADD = $(TEST_LDADD)
+region_test_SOURCES = region-test.c utils.c utils.h
 
 blitters_test_LDADD = $(TEST_LDADD)
 blitters_test_SOURCES = blitters-test.c utils.c utils.h
 
 scaling_test_LDADD = $(TEST_LDADD)
 scaling_test_SOURCES = scaling-test.c utils.c utils.h
+
+alphamap_LDADD = $(TEST_LDADD)
+alphamap_SOURCES = alphamap.c utils.c utils.h
 
 # GTK using test programs
 
@@ -31,7 +39,7 @@ if HAVE_GTK
 GTK_LDADD = $(TEST_LDADD) $(GTK_LIBS)
 GTK_UTILS = gtk-utils.c gtk-utils.h
 
-TESTPROGRAMS +=			\
+TESTPROGRAMS_GTK =		\
 	clip-test		\
 	clip-in			\
 	composite-test		\
@@ -39,7 +47,8 @@ TESTPROGRAMS +=			\
 	alpha-test		\
 	screen-test		\
 	convolution-test	\
-	trap-test
+	trap-test		\
+	alphamap
 
 INCLUDES += $(GTK_CFLAGS)
 
@@ -69,5 +78,7 @@ convolution_test_SOURCES = convolution-test.c $(GTK_UTILS)
 
 endif
 
-noinst_PROGRAMS = $(TESTPROGRAMS)
+noinst_PROGRAMS = $(TESTPROGRAMS) $(TESTPROGRAMS_GTK)
+
+TESTS = $(TESTPROGRAMS)
 
