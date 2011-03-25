@@ -61,6 +61,29 @@ pixman_have_vmx (void)
     return have_vmx;
 }
 
+#elif defined (__OpenBSD__)
+#include <sys/param.h>
+#include <sys/sysctl.h>
+#include <machine/cpu.h>
+
+static pixman_bool_t
+pixman_have_vmx (void)
+{
+    if (!initialized)
+    {
+	int mib[2] = { CTL_MACHDEP, CPU_ALTIVEC };
+	size_t length = sizeof(have_vmx);
+	int error =
+	    sysctl (mib, 2, &have_vmx, &length, NULL, 0);
+
+	if (error != 0)
+	    have_vmx = FALSE;
+
+	initialized = TRUE;
+    }
+    return have_vmx;
+}
+
 #elif defined (__linux__)
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -123,7 +146,7 @@ pixman_have_vmx (void)
     return have_vmx;
 }
 
-#else /* !__APPLE__ && !__linux__ */
+#else /* !__APPLE__ && !__OpenBSD__ && !__linux__ */
 #include <signal.h>
 #include <setjmp.h>
 
@@ -221,7 +244,7 @@ pixman_have_arm_neon (void)
 
 #endif /* USE_ARM_NEON */
 
-#else /* linux ELF */
+#elif defined (__linux__) /* linux ELF */
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -305,7 +328,12 @@ pixman_have_arm_neon (void)
 
 #endif /* USE_ARM_NEON */
 
-#endif /* linux */
+#else /* linux ELF */
+
+#define pixman_have_arm_simd() FALSE
+#define pixman_have_arm_neon() FALSE
+
+#endif
 
 #endif /* USE_ARM_SIMD || USE_ARM_NEON */
 
@@ -548,28 +576,36 @@ pixman_have_sse2 (void)
 pixman_implementation_t *
 _pixman_choose_implementation (void)
 {
-#ifdef USE_SSE2
-    if (pixman_have_sse2 ())
-	return _pixman_implementation_create_sse2 ();
-#endif
+    pixman_implementation_t *imp;
+
+    imp = _pixman_implementation_create_general();
+    imp = _pixman_implementation_create_fast_path (imp);
+    
 #ifdef USE_MMX
     if (pixman_have_mmx ())
-	return _pixman_implementation_create_mmx ();
+	imp = _pixman_implementation_create_mmx (imp);
+#endif
+
+#ifdef USE_SSE2
+    if (pixman_have_sse2 ())
+	imp = _pixman_implementation_create_sse2 (imp);
+#endif
+
+#ifdef USE_ARM_SIMD
+    if (pixman_have_arm_simd ())
+	imp = _pixman_implementation_create_arm_simd (imp);
 #endif
 
 #ifdef USE_ARM_NEON
     if (pixman_have_arm_neon ())
-	return _pixman_implementation_create_arm_neon ();
+	imp = _pixman_implementation_create_arm_neon (imp);
 #endif
-#ifdef USE_ARM_SIMD
-    if (pixman_have_arm_simd ())
-	return _pixman_implementation_create_arm_simd ();
-#endif
+    
 #ifdef USE_VMX
     if (pixman_have_vmx ())
-	return _pixman_implementation_create_vmx ();
+	imp = _pixman_implementation_create_vmx (imp);
 #endif
 
-    return _pixman_implementation_create_fast_path ();
+    return imp;
 }
 
